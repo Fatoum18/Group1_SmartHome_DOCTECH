@@ -168,16 +168,50 @@ High-Level Description of How the Solution Addresses the Challenges
   
 ## 1.4. Architecture Overview
 ### 1.4.1. Logical Architecture
-Describe the high-level architecture of the application.
+**The high-level architecture of the application**.
 
 ![Logical Architecture](./images/logical-architecture.png)
 
+  Here’s a high-level flow of how these components interact:
+  - **Devices** send data to **Azure IoT Hub** via secure protocols.
+  - **Azure IoT Hub** forwards data to **Azure Functions** for processing.
+  - **Azure Functions** executes business logic and:
+    - Updates the **database** (if applicable).
+    - Sends real-time updates to the **SignalR** Service.
+  - **The Angular Web App** retrieves updates from **SignalR** and interacts with **Azure Functions** for actions like managing devices or sending commands.
+
 ### 1.4.2. Components Description
-- **IoT Devices**: Edge devices sending telemetry data.
-- **Azure IoT Hub**: Manages device communication.
-- **Azure Functions**: Processes data and triggers real-time updates.
-- **SignalR Service**: Enables real-time updates to the web app.
-- **Web Application**: User-facing dashboard for monitoring and control.
+High-Level Description of IoT Solution Components
+- **IoT Devices (Edge Devices)**
+  - **Description**:
+  IoT devices, such as sensors and actuators, collect and send telemetry data (e.g., temperature, motion, or humidity) to the cloud. These devices can also receive commands from the cloud for tasks like toggling power, updating configurations, or performing specific actions.
+  - **Role in the Solution**:
+  Acts as the data source and point of control for real-world environments, enabling interaction with physical systems.
+
+- **Azure IoT Hub**
+  - **Description**:
+  A cloud-hosted service that facilitates secure, bi-directional communication between IoT devices and the backend system. It supports various protocols (e.g., MQTT, HTTP) and ensures reliable device authentication and message delivery.
+  - **Role in the Solution**:
+  Central hub for managing device connectivity, data exchange, and communication with the backend.
+
+- **Azure Functions**
+  - **Description**:
+  A serverless computing platform that executes event-driven code in response to triggers, such as incoming telemetry data from the IoT Hub. Azure Functions processes this data, applies business logic, and triggers additional actions like storing data in a database or sending updates.
+  - **Role in the Solution**:
+  Acts as the brain of the system, processing data and orchestrating the flow between components like the database, SignalR, and web app.
+
+- **SignalR Service**
+  - **Description**:
+  A real-time communication service that facilitates instant updates from the backend to the web application. It allows data to be pushed directly to the user interface without needing a page refresh.
+  - **Role in the Solution**:
+  Ensures real-time updates for users, such as live telemetry readings, device state changes, or alert notifications.
+
+- **Web Application**
+  - **Description**:
+  A user-facing dashboard, typically built using frameworks like Angular, that provides an interface for monitoring devices, viewing data, and controlling the IoT devices. It connects to the SignalR service for real-time updates and interacts with the backend for actions like retrieving historical data or sending commands.
+  - **Role in the Solution**:
+  Serves as the control center for users, offering an intuitive and responsive way to interact with the IoT system.
+
 
 ## 1.5. Detailed Component Design
 ### 1.5.1. IoT Devices
